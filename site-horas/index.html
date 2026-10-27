@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title id="title-tag">Relógio Mundial</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#001f3f,#005792,#00bcd4);
+    overflow:hidden;
+}
+
+body::before{
+    content:'';
+    position:absolute;
+    width:700px;
+    height:700px;
+    border-radius:50%;
+    background:rgba(255,255,255,.08);
+    top:-250px;
+    right:-250px;
+}
+
+body::after{
+    content:'';
+    position:absolute;
+    width:500px;
+    height:500px;
+    border-radius:50%;
+    background:rgba(255,255,255,.05);
+    bottom:-200px;
+    left:-200px;
+}
+
+.container{
+    width:450px;
+    padding:40px;
+    border-radius:25px;
+    background:rgba(255,255,255,.12);
+    backdrop-filter:blur(18px);
+    box-shadow:0 20px 40px rgba(0,0,0,.35);
+    text-align:center;
+    color:white;
+    z-index:10;
+}
+
+h1{
+    font-size:32px;
+    margin-bottom:30px;
+}
+
+select{
+    width:100%;
+    padding:15px;
+    border:none;
+    outline:none;
+    border-radius:10px;
+    font-size:17px;
+    margin-bottom:30px;
+    cursor: pointer;
+}
+
+.relogio{
+    font-size:60px;
+    font-weight:bold;
+    letter-spacing:3px;
+}
+
+.data{
+    margin-top:15px;
+    font-size:20px;
+    text-transform: capitalize;
+}
+
+.local{
+    margin-top:20px;
+    font-size:18px;
+    color:#d6f4ff;
+    font-weight: 500;
+}
+
+footer{
+    margin-top:35px;
+    font-size:13px;
+    color:#dfefff;
+}
+
+/* === ESTILOS DO TOOLTIP (NOTA AO PASSAR O MOUSE) === */
+.kraven-link {
+    position: relative;
+    cursor: pointer;
+    font-weight: bold;
+    color: #ffffff;
+    text-decoration: underline dotted;
+}
+
+.kraven-link::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: normal;
+    white-space: normal;
+    width: 220px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 100;
+}
+
+.kraven-link:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-5px);
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h1 id="app-title">🌍 Relógio Mundial</h1>
+
+<select id="timezone">
+    <option value="America/Sao_Paulo" data-pt="Brasil - São Paulo" data-en="Brazil - São Paulo" data-es="Brasil - São Paulo">Brasil - São Paulo</option>
+    <option value="America/Recife" data-pt="Brasil - Recife" data-en="Brazil - Recife" data-es="Brasil - Recife">Brasil - Recife</option>
+    <option value="America/New_York" data-pt="Estados Unidos - Nova York" data-en="USA - New York" data-es="EE. UU. - Nueva York">Estados Unidos - Nova York</option>
+    <option value="America/Los_Angeles" data-pt="Estados Unidos - Los Angeles" data-en="USA - Los Angeles" data-es="EE. UU. - Los Ángeles">Estados Unidos - Los Angeles</option>
+    <option value="Europe/London" data-pt="Reino Unido - Londres" data-en="UK - London" data-es="Reino Unido - Londres">Reino Unido - Londres</option>
+    <option value="Europe/Paris" data-pt="França - Paris" data-en="France - Paris" data-es="Francia - París">França - Paris</option>
+    <option value="Europe/Madrid" data-pt="Espanha - Madrid" data-en="Spain - Madrid" data-es="España - Madrid">Espanha - Madrid</option>
+    <option value="Europe/Lisbon" data-pt="Portugal - Lisboa" data-en="Portugal - Lisbon" data-es="Portugal - Lisboa">Portugal - Lisboa</option>
+    <option value="Europe/Berlin" data-pt="Alemanha - Berlim" data-en="Germany - Berlin" data-es="Alemania - Berlín">Alemanha - Berlim</option>
+    <option value="Europe/Rome" data-pt="Itália - Roma" data-en="Italy - Rome" data-es="Italia - Roma">Itália - Roma</option>
+    <option value="Asia/Tokyo" data-pt="Japão - Tóquio" data-en="Japan - Tokyo" data-es="Japón - Tokio">Japão - Tóquio</option>
+    <option value="Asia/Seoul" data-pt="Coreia do Sul - Seul" data-en="South Korea - Seoul" data-es="Corea del Sur - Seúl">Coreia do Sul - Seul</option>
+    <option value="Asia/Shanghai" data-pt="China - Xangai" data-en="China - Shanghai" data-es="China - Shanghái">China - Xangai</option>
+    <option value="Asia/Dubai" data-pt="Dubai" data-en="Dubai" data-es="Dubái">Dubai</option>
+    <option value="Asia/Kolkata" data-pt="Índia" data-en="India" data-es="India">Índia</option>
+    <option value="Australia/Sydney" data-pt="Austrália - Sydney" data-en="Australia - Sydney" data-es="Australia - Sídney">Austrália - Sydney</option>
+    <option value="Pacific/Auckland" data-pt="Nova Zelândia" data-en="New Zealand" data-es="Nueva Zelanda">Nova Zelândia</option>
+    <option value="Africa/Cairo" data-pt="Egito" data-en="Egypt" data-es="Egipto">Egito</option>
+    <option value="Africa/Johannesburg" data-pt="África do Sul" data-en="South Africa" data-es="Sudáfrica">África do Sul</option>
+    <option value="UTC" data-pt="UTC" data-en="UTC" data-es="UTC">UTC</option>
+</select>
+
+<div class="relogio" id="hora">00:00:00</div>
+<div class="data" id="data">---</div>
+<div class="local" id="local">---</div>
+
+<footer id="footer-text">
+    Atualização em tempo real • HTML • CSS • JavaScript <br>
+    Desenvolvido por • <span class="kraven-link" id="kraven-span">Lucas Ricardo</span>
+</footer>
+
+</div>
+
+<script>
+// 1. Dicionário de traduções
+const traducoes = {
+    pt: {
+        tituloPage: "Relógio Mundial",
+        tituloApp: "🌍 Relógio Mundial",
+        footerPrefix: "Atualização em tempo real • HTML • CSS • JavaScript <br> Desenvolvido por • ",
+        kravenInfo: "Sou estudante autodidata de programação e estou iniciando minha jornada no mundo da tecnologia. Python, HTML, CSS, JavaScript, Git e GitHub."
+    },
+    en: {
+        tituloPage: "World Clock",
+        tituloApp: "🌍 World Clock",
+        footerPrefix: "Real-time updates • HTML • CSS • JavaScript <br> Developed by • ",
+        kravenInfo: "I am a self-taught programming student and I am starting my journey in the world of technology. Python, HTML, CSS, JavaScript, Git, and GitHub."
+    },
+    es: {
+        tituloPage: "Reloj Mundial",
+        tituloApp: "🌍 Reloj Mundial",
+        footerPrefix: "Actualización en tiempo real • HTML • CSS • JavaScript <br> Desarrollado por • ",
+        kravenInfo: "Soy un estudiante de programación autodidacta y estoy comenzando mi camino en el mundo de la tecnología. Python, HTML, CSS, JavaScript, Git y GitHub."
+    }
+};
+
+// Detecta o idioma do usuário
+const userLang = (navigator.language || "pt").slice(0, 2);
+const lang = traducoes[userLang] ? userLang : "en";
+
+// Elementos da DOM
+const select = document.getElementById("timezone");
+const hora = document.getElementById("hora");
+const data = document.getElementById("data");
+const local = document.getElementById("local");
+const titleTag = document.getElementById("title-tag");
+const appTitle = document.getElementById("app-title");
+
+// 2. Aplicar traduções na interface
+function aplicarTraducao() {
+    document.documentElement.lang = userLang;
+    titleTag.textContent = traducoes[lang].tituloPage;
+    appTitle.textContent = traducoes[lang].tituloApp;
+    
+    // Atualiza o rodapé mantendo o span dinâmico
+    const footerElement = document.getElementById("footer-text");
+    footerElement.innerHTML = `${traducoes[lang].footerPrefix}<span class="kraven-link" id="kraven-span" data-tooltip="${traducoes[lang].kravenInfo}">Lucas Ricardo</span>`;
+
+    // Traduz os <option> do select
+    Array.from(select.options).forEach(option => {
+        const textoTraduzido = option.getAttribute(`data-${lang}`);
+        if (textoTraduzido) option.textContent = textoTraduzido;
+    });
+}
+
+// 3. Tenta selecionar o fuso local do navegador
+const fusoLocal = Intl.DateTimeFormat().resolvedOptions().timeZone;
+if ([...select.options].some(opt => opt.value === fusoLocal)) {
+    select.value = fusoLocal;
+}
+
+// 4. Atualizar relógio e exibir Fuso Horário
+function atualizar() {
+    const zona = select.value;
+    const agora = new Date();
+
+    hora.textContent = agora.toLocaleTimeString(userLang, {
+        timeZone: zona,
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+    });
+
+    data.textContent = agora.toLocaleDateString(userLang, {
+        timeZone: zona,
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    });
+
+    const fusoHorarioFormatado = new Intl.DateTimeFormat(userLang, {
+        timeZone: zona,
+        timeZoneName: "short"
+    }).formatToParts(agora).find(p => p.type === "timeZoneName")?.value || "";
+
+    const nomeFormatado = zona.replace("_", " ");
+    local.textContent = `${nomeFormatado} (${fusoHorarioFormatado})`;
+}
+
+// Inicialização
+aplicarTraducao();
+setInterval(atualizar, 1000);
+atualizar();
+
+select.addEventListener("change", atualizar);
+</script>
+
+</body>
+</html>
